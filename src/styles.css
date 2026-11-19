@@ -3,3 +3,6 @@
 
 .deadline{margin-top:24px;padding:20px;border:1px solid #795730;border-radius:18px;background:linear-gradient(135deg,#282016,#171310);text-align:center}.deadline .eyebrow{color:#e9bb7c;font-size:9px;letter-spacing:1.2px}.deadline>strong{display:block;font:700 40px Manrope,-apple-system,sans-serif;letter-spacing:1px;font-variant-numeric:tabular-nums;margin:8px 0;color:#ffcf91}.deadline>strong span{opacity:.4}.deadline p{font-size:12px;line-height:1.6;margin:0;color:#c4a98a}.deadline.urgent{border-color:#b35447;background:#2a1716}.deadline.urgent>strong{color:#ff9686}.deadline.secured{background:#151c12;border-color:#38472b}.deadline.secured>strong{color:#c5f66b;font-size:25px}.deadline.secured p,.deadline.secured .eyebrow{color:#9ab181}.notification-result{margin-top:12px;background:#1b1b1f;border:1px solid #35353b;border-radius:15px;padding:16px;font-size:13px;line-height:1.6;color:#c8c8ce}.notification-result button{display:block;margin-top:12px;border:0;border-radius:9px;padding:8px 14px;background:#c5f66b;color:#171b11}.streak-card .midnight{display:none}
 
+
+.push-status{color:#94949d;font-size:11px;text-align:center;line-height:1.6;margin:9px 0}.reminders:disabled{opacity:.5}
+

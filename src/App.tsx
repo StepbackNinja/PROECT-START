@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { cancelReminders, scheduleReminders, showTestNotification } from './reminders'
+import { disablePush, enableAndTestPush, pushEnabled, syncPush } from './reminders'
 import { dayKey, load, persist, weekKey, type Save } from './storage'
 
 export default function App() {
@@ -7,6 +7,9 @@ export default function App() {
   const [now, setNow] = useState(Date.now())
   const [won, setWon] = useState(false)
   const [notificationMessage, setNotificationMessage] = useState('')
+  const [pushOn, setPushOn] = useState(pushEnabled)
+  const [pushBusy, setPushBusy] = useState(false)
+  const [syncPending, setSyncPending] = useState(false)
   useEffect(() => {
     if (!won) return
     const timeout = window.setTimeout(() => setWon(false), 2500)
@@ -17,10 +20,35 @@ export default function App() {
   useEffect(() => { persist(save) }, [save])
   useEffect(() => {
     if (save.missionEnd && now >= save.missionEnd && !done) {
-      setSave(s => ({ ...s, missionEnd: null, xp: s.xp + 50, days: [...s.days, dayKey()] })); setWon(true); cancelReminders()
+      setSave(s => ({ ...s, missionEnd: null, xp: s.xp + 50, days: [...s.days, dayKey()] })); setWon(true)
     }
   }, [now, save.missionEnd, done])
-  useEffect(() => { scheduleReminders(save.reminders, () => save.days.includes(dayKey())) ; return cancelReminders }, [save.reminders, done])
+  useEffect(() => {
+    let disposed = false
+    const sync = async () => {
+      if (!pushOn) return
+      try { await syncPush(done); if (!disposed) setSyncPending(false) }
+      catch { if (!disposed) setSyncPending(true) }
+    }
+    void sync()
+    const visible = () => { if (document.visibilityState === 'visible') void sync() }
+    window.addEventListener('online', sync)
+    document.addEventListener('visibilitychange', visible)
+    const retry = window.setInterval(sync, 60000)
+    return () => {disposed=true;window.clearInterval(retry);window.removeEventListener('online',sync);document.removeEventListener('visibilitychange',visible)}
+  }, [pushOn, done, today])
+  const testPush = async () => {
+    setPushBusy(true)
+    try {setNotificationMessage(await enableAndTestPush(done))}
+    catch (error) {setNotificationMessage(error instanceof Error ? error.message : 'Не удалось подключить push. Проверь интернет и попробуй снова.')}
+    finally {setPushOn(pushEnabled());setPushBusy(false)}
+  }
+  const turnOffPush = async () => {
+    setPushBusy(true)
+    try {await disablePush();setPushOn(false);setSyncPending(false);setNotificationMessage('Фоновые напоминания выключены.')}
+    catch {setNotificationMessage('Сервер не ответил. Напоминания ещё включены — повтори отключение с интернетом.')}
+    finally {setPushBusy(false)}
+  }
   const remaining = save.missionEnd ? Math.max(0, Math.ceil((save.missionEnd-now)/1000)) : 300
   const time = `${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`
   const streak = useMemo(() => { let n=0, d=new Date(now); if (!save.days.includes(dayKey(d))) d.setDate(d.getDate()-1); while(save.days.includes(dayKey(d))){n++;d.setDate(d.getDate()-1)} return n }, [save.days, now])
@@ -45,7 +73,8 @@ export default function App() {
     </section>
     <section className="stats"><article className="card streak-card"><div className="card-title">🔥 СЕРИЯ</div><div className="streak-number">{streak}<small> дней</small></div><div className="week">{week.map((d,i)=><div className="day" key={i}><span>{['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'][i]}</span><b className={`${save.days.includes(dayKey(d))?'marked':''} ${dayKey(d)===today?'today':''}`}>{save.days.includes(dayKey(d))?'✓':d.getDate()}</b></div>)}</div><div className="midnight">⏳ До полуночи <strong>{String(Math.floor(until/3600000)).padStart(2,'0')}:{String(Math.floor(until/60000)%60).padStart(2,'0')}:{String(Math.floor(until/1000)%60).padStart(2,'0')}</strong></div></article>
     <article className="card freeze-card"><div className="freeze-icon">❄</div><div className="freeze-copy"><div className="card-title">ЗАМОРОЗКА СЕРИИ</div><p>{save.freezeWeek===weekKey()?'Использована на этой неделе':freezeAvailable?'Вчера пропустил? Нажми, чтобы сохранить серию':'Одна страховка в неделю · доступна после пропуска'}</p></div><button onClick={useFreeze} disabled={!freezeAvailable} aria-label="Использовать заморозку серии">{save.freezeWeek===weekKey()?'✓':'→'}</button></article></section>
-    <footer><button onClick={async()=>{try {setNotificationMessage(await showTestNotification());setSave(s=>({...s,reminders:'Notification'in window&&Notification.permission==='granted'}))} catch {setNotificationMessage('Не удалось показать уведомление. На iPhone открой установленный START и проверь разрешения уведомлений.')}}} className="reminders">🔔 Проверить уведомления</button><span>Маленький шаг — тоже шаг.</span></footer>
+    <footer><button onClick={testPush} disabled={pushBusy} className="reminders">{pushBusy?'Подключаемся…':pushOn?'🔔 Проверить серверный push':'🔔 Включить фоновые напоминания'}</button>{pushOn&&<button onClick={turnOffPush} disabled={pushBusy} className="reminders">Выключить</button>}</footer>
+    {pushOn&&<p className="push-status">{syncPending?'Нет связи с сервером. Отмена напоминаний после миссии ещё не подтверждена.':'Напоминания: 10:00 · 18:00 · 23:00'}</p>}
     {notificationMessage&&<div className="notification-result" role="status">{notificationMessage}<button onClick={()=>setNotificationMessage('')} aria-label="Закрыть сообщение">Понятно</button></div>}
     {won&&<div className="confetti" aria-hidden="true">✦　·　✦　　·　✦</div>}
   </main>

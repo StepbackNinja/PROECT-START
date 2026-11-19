@@ -4,5 +4,7 @@ dist/
 .env*
 !.env.example
 *.log
+work/
+outputs/
 
 .vercel
