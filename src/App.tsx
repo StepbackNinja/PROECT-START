@@ -6,6 +6,11 @@ export default function App() {
   const [save, setSave] = useState<Save>(load)
   const [now, setNow] = useState(Date.now())
   const [won, setWon] = useState(false)
+  useEffect(() => {
+    if (!won) return
+    const timeout = window.setTimeout(() => setWon(false), 2500)
+    return () => window.clearTimeout(timeout)
+  }, [won])
   const today = dayKey(new Date(now)), done = save.days.includes(today)
   useEffect(() => { const t = window.setInterval(() => setNow(Date.now()), 500); return () => clearInterval(t) }, [])
   useEffect(() => { persist(save) }, [save])
@@ -35,6 +40,6 @@ export default function App() {
     <section className="stats"><article className="card streak-card"><div className="card-title">🔥 СЕРИЯ</div><div className="streak-number">{streak}<small> дней</small></div><div className="week">{week.map((d,i)=><div className="day" key={i}><span>{['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'][i]}</span><b className={`${save.days.includes(dayKey(d))?'marked':''} ${dayKey(d)===today?'today':''}`}>{save.days.includes(dayKey(d))?'✓':d.getDate()}</b></div>)}</div><div className="midnight">⏳ До полуночи <strong>{String(Math.floor(until/3600000)).padStart(2,'0')}:{String(Math.floor(until/60000)%60).padStart(2,'0')}:{String(Math.floor(until/1000)%60).padStart(2,'0')}</strong></div></article>
     <article className="card freeze-card"><div className="freeze-icon">❄</div><div className="freeze-copy"><div className="card-title">ЗАМОРОЗКА СЕРИИ</div><p>{save.freezeWeek===weekKey()?'Использована на этой неделе':freezeAvailable?'Вчера пропустил? Нажми, чтобы сохранить серию':'Одна страховка в неделю · доступна после пропуска'}</p></div><button onClick={useFreeze} disabled={!freezeAvailable} aria-label="Использовать заморозку серии">{save.freezeWeek===weekKey()?'✓':'→'}</button></article></section>
     <footer><button onClick={async()=>{if(!('Notification'in window))return;const permission=await Notification.requestPermission();setSave(s=>({...s,reminders:permission==='granted'}))}} className="reminders">{save.reminders?'🔔 Напоминания включены':'🔔 Включить напоминания'}</button><span>Маленький шаг — тоже шаг.</span></footer>
-    {done&&<div className="confetti" aria-hidden="true">✦　·　✦　　·　✦</div>}
+    {won&&<div className="confetti" aria-hidden="true">✦　·　✦　　·　✦</div>}
   </main>
 }
