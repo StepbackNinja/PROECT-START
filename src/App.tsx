@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { disablePush, enableAndTestPush, pushEnabled, syncPush } from './reminders'
 import { dayKey, load, persist, weekKey, type Save } from './storage'
+import CosmosScene from './CosmosScene'
 
-export default function App() {
+export default function App({cosmos=false}: {cosmos?:boolean}) {
   const [save, setSave] = useState<Save>(load)
   const [now, setNow] = useState(Date.now())
   const [won, setWon] = useState(false)
@@ -10,6 +11,12 @@ export default function App() {
   const [pushOn, setPushOn] = useState(pushEnabled)
   const [pushBusy, setPushBusy] = useState(false)
   const [syncPending, setSyncPending] = useState(false)
+  const [starDemo,setStarDemo] = useState(false)
+  useEffect(()=>{
+    if (!starDemo) return
+    const timeout=window.setTimeout(()=>setStarDemo(false),2500)
+    return ()=>window.clearTimeout(timeout)
+  },[starDemo])
   useEffect(() => {
     if (!won) return
     const timeout = window.setTimeout(() => setWon(false), 2500)
@@ -59,7 +66,8 @@ export default function App() {
   const freezeAvailable = save.freezeWeek!==weekKey() && !save.days.includes(dayKey(yesterday)) && save.days.includes(dayKey(beforeYesterday))
   const useFreeze = () => { if (!freezeAvailable) return; setSave(s=>({...s,freezeWeek:weekKey(),days:[...s.days,dayKey(yesterday)]})) }
   const week = Array.from({length:7},(_,i)=>{ const d=new Date(now); d.setDate(d.getDate()-((d.getDay()+6)%7)+i); return d })
-  return <main className="app">
+  return <main className={`app ${cosmos?'cosmos':''}`}>
+    {cosmos&&<><CosmosScene active={!!save.missionEnd&&!done} victory={won||starDemo}/><div className="design-preview">Облик START · космос</div></>}
     <header><div className="brand"><span className="brand-mark">▶</span> START</div><div className="xp">✦ {save.xp} XP</div></header>
     <section className={`deadline ${done?'secured':until<3600000?'urgent':''}`} aria-label="Время до окончания дня">
       <div className="eyebrow">{done?'СЕГОДНЯШНИЙ ДЕНЬ ЗАСЧИТАН':'СЕГОДНЯШНЯЯ МИССИЯ ЕЩЁ НЕ ВЫПОЛНЕНА'}</div>
@@ -76,6 +84,7 @@ export default function App() {
     <footer><button onClick={testPush} disabled={pushBusy} className="reminders">{pushBusy?'Подключаемся…':pushOn?'🔔 Проверить серверный push':'🔔 Включить фоновые напоминания'}</button>{pushOn&&<button onClick={turnOffPush} disabled={pushBusy} className="reminders">Выключить</button>}</footer>
     {pushOn&&<p className="push-status">{syncPending?'Нет связи с сервером. Отмена напоминаний после миссии ещё не подтверждена.':'Напоминания: 10:00 · 18:00 · 23:00'}</p>}
     {notificationMessage&&<div className="notification-result" role="status">{notificationMessage}<button onClick={()=>setNotificationMessage('')} aria-label="Закрыть сообщение">Понятно</button></div>}
-    {won&&<div className="confetti" aria-hidden="true">✦　·　✦　　·　✦</div>}
+    {cosmos&&<button className="star-demo" onClick={()=>setStarDemo(true)} disabled={starDemo}>Посмотреть падающую звезду</button>}
+    {won&&!cosmos&&<div className="confetti" aria-hidden="true">✦　·　✦　　·　✦</div>}
   </main>
 }
