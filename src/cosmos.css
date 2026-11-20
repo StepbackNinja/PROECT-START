@@ -99,3 +99,15 @@
 @media(min-width:900px){.cosmos-nebula{background-image:url('/assets/cosmos-v2-desktop.webp')}}
 @media(max-height:720px){.cosmos .hero{padding-top:28px;min-height:460px}.cosmos .hero h1{font-size:28px}.cosmos .orb{margin-bottom:22px}.cosmos .start-button{margin-bottom:20px}}
 @media(prefers-reduced-motion:reduce){.cosmos-scene *,.cosmos .brand,.cosmos .mission-control,.cosmos .mission-control::before,.cosmos .mission-control::after,.cosmos .mission-satellite{animation:none!important;transition:none!important}.cosmos .shooting-star{display:none}.cosmos-breath,.cosmos-dust{opacity:.3}}
+/* The approved artwork stays on its native pixel grid: light animates, not texture. */
+.cosmic-portrait{position:relative;flex-shrink:0;width:calc(100% + 56px);align-self:center;aspect-ratio:1;margin:20px 0 0;isolation:isolate;overflow:hidden;pointer-events:none;mask-image:linear-gradient(transparent,#000 7%,#000 88%,transparent)}
+.cosmic-portrait img{display:block;width:100%;height:100%;object-fit:contain}
+.portrait-light{position:absolute;inset:0 0 64%;background:radial-gradient(ellipse at 48% 38%,#e5c4ee35,transparent 65%);mix-blend-mode:screen;animation:portrait-breathe 12s ease-in-out infinite alternate}
+.portrait-stars{position:absolute;inset:0 0 66%;background:radial-gradient(circle at 24% 31%,#fff9 0 .6px,transparent 1.4px),radial-gradient(circle at 77% 26%,#e5d5ff99 0 .7px,transparent 1.6px),radial-gradient(circle at 58% 73%,#fff8 0 .6px,transparent 1.3px);animation:portrait-breathe 7s ease-in-out infinite alternate-reverse}
+@keyframes portrait-breathe{from{opacity:.15}to{opacity:.8}}
+.portrait-paused *{animation-play-state:paused!important}
+.cosmos .hero .mission-control{margin:0 auto 18px}
+.cosmos-nebula{animation:none;transform:none;will-change:auto;opacity:.24}
+.cosmos-dust,.cosmos-breath,.cosmos-particles{display:none}
+@media(min-width:650px){.cosmic-portrait{width:calc(100% + 60px)}}
+@media(prefers-reduced-motion:reduce){.portrait-light,.portrait-stars{animation:none;opacity:.2}}

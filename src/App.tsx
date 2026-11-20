@@ -3,6 +3,7 @@ import { disablePush, enableAndTestPush, pushEnabled, syncPush } from './reminde
 import { dayKey, load, persist, weekKey, type Save } from './storage'
 import CosmosScene from './CosmosScene'
 import MissionControl from './MissionControl'
+import CosmicPortrait from './CosmicPortrait'
 
 export default function App({cosmos=false}: {cosmos?:boolean}) {
   const [save, setSave] = useState<Save>(load)
@@ -76,6 +77,7 @@ export default function App({cosmos=false}: {cosmos?:boolean}) {
       <p>{done?'Серия сохранена. Возвращайся завтра.':until<300000?'До полуночи меньше пяти минут. Начни сейчас.':'До полуночи. Удели делу пять минут, чтобы засчитать этот день.'}</p>
     </section>
     <section className="hero"><div className="eyebrow">ТВОЙ МОМЕНТ — СЕГОДНЯ</div><h1>{done ? 'Ты это сделал.' : cosmos ? 'Всего пять минут.' : 'Начни с малого.'}</h1><p>{done ? 'Пять минут — и день уже твой.' : cosmos ? 'Выбери одно дело. Начни, даже если не готов.' : 'Не нужно быть готовым. Просто начни.'}</p>
+    {cosmos&&<CosmicPortrait/>}
     {cosmos?<MissionControl remaining={save.missionEnd?Math.max(0,(save.missionEnd-now)/1000):300} time={time} running={!!save.missionEnd&&!done} done={done} victory={won} onStart={start}/>:<>
       <div className={`orb ${save.missionEnd&&!done?'running':''} ${won?'celebrate':''}`}><div className="orbit"/><div className="orb-inner"><span>{save.missionEnd&&!done?'МИССИЯ':'5 МИНУТ'}</span><strong>{save.missionEnd&&!done?time:'5:00'}</strong><small>{save.missionEnd&&!done?'ТЫ СПРАВИШЬСЯ':'ТОЛЬКО ДЛЯ ТЕБЯ'}</small></div></div>
       <button className={`start-button ${done?'complete':''} ${save.missionEnd?'active':''}`} onClick={start} disabled={done||!!save.missionEnd}>{done?'✓  ГОТОВО НА СЕГОДНЯ':save.missionEnd?`МИССИЯ ИДЁТ · ${time}`:'НАЧАТЬ'}{!done&&!save.missionEnd&&<span>5 минут делай то, что откладывал</span>}</button>
