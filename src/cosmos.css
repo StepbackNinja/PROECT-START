@@ -1,80 +1,101 @@
 .cosmos {
-  --pearl:#f1ebe2; --muted:#b0aabd; --champagne:#dcc29e;
+  --pearl:#efedf4;--muted:#c1bbce;--champagne:#dcc9b0;
   position:relative;isolation:isolate;max-width:460px;color:var(--pearl);
-  padding:calc(env(safe-area-inset-top) + 22px) 24px calc(env(safe-area-inset-bottom) + 24px);
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:calc(env(safe-area-inset-top) + 24px) 28px calc(env(safe-area-inset-bottom) + 24px);
+  font-family:'Manrope Variable',-apple-system,sans-serif;font-weight:350;
 }
-.cosmos-scene {position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;background:#030409;contain:strict}
-.cosmos-nebula {position:absolute;inset:-3%;background:url('/assets/cosmos-v1.webp') center 58% / cover no-repeat;animation:cosmic-drift 100s ease-in-out infinite alternate;transform-origin:65% 38%}
-.cosmos-stars {position:absolute;inset:0;animation:star-drift 75s linear infinite alternate}
-.cosmos-stars i {position:absolute;width:var(--size);height:var(--size);border-radius:50%;background:#faf2e7;opacity:.5;box-shadow:0 0 7px #dad6ff80;animation:starlight 8s ease-in-out var(--delay) infinite alternate}
-.cosmos-horizon {position:absolute;inset:60% 10% 8%;background:radial-gradient(ellipse at 50% 100%,#ebbd7b12,transparent 65%);opacity:.5;transition:opacity 3s}
+.cosmos-scene{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;background:#030409;contain:strict}
+.cosmos-nebula{position:absolute;inset:-3%;background:url('/assets/cosmos-v2-mobile.webp') 88% 48%/cover no-repeat;animation:universe-drift 32s ease-in-out infinite alternate;transform-origin:68% 35%;will-change:transform}
+.cosmos-dust{position:absolute;inset:-15%;background:radial-gradient(ellipse at 62% 29%,#a4a2dc20,transparent 43%),radial-gradient(ellipse at 20% 50%,#8d79ab19,transparent 38%);mix-blend-mode:screen;animation:dust-flow 21s ease-in-out infinite alternate;pointer-events:none}
+.cosmos-breath{position:absolute;inset:0;background:radial-gradient(ellipse at 72% 32%,#f2cba52b,transparent 51%);mix-blend-mode:screen;animation:universe-breath 11s ease-in-out infinite alternate}
+.cosmos-particles{position:absolute;inset:0;width:100%;height:100%}
+.cosmos-horizon{position:absolute;inset:52% 0 4%;background:radial-gradient(ellipse at 50% 100%,#debc8e0c,transparent 67%);opacity:.5;transition:opacity 4s}
 .scene-active .cosmos-horizon{opacity:1}
-.scene-active .cosmos-nebula{animation-duration:65s}
-.cosmos-vignette{position:absolute;inset:0;background:linear-gradient(180deg,#02030a30 0%,#02030a10 25%,#04040c50 55%,#05060cde 85%,#05060cf5 100%)}
+.scene-active .cosmos-breath{background:radial-gradient(ellipse at 70% 32%,#f2cba541,transparent 56%)}
+.cosmos-vignette{position:absolute;inset:0;background:linear-gradient(180deg,#03030b20 0%,transparent 20%,#03040b12 47%,#04040c70 73%,#05050bce 100%)}
 .scene-paused *{animation-play-state:paused!important}
-.cosmos > :not(.cosmos-scene){position:relative;z-index:1}
-.cosmos .design-preview{font-size:10px;color:#bbb4c1;letter-spacing:.07em;text-align:center;margin:-6px 0 18px;order:-2}
-.cosmos header{order:-1;align-items:center;min-height:62px}
-.cosmos .brand{font-family:Impact,'Arial Narrow',-apple-system,sans-serif;font-size:56px;line-height:1;font-weight:900;letter-spacing:-3px;transform:scaleX(.8);transform-origin:left;animation:word-focus 1.1s ease-out both;text-shadow:-1px 0 7px #8d9fcb44,1px 0 7px #d5b68a55}
+.cosmos>:not(.cosmos-scene){position:relative;z-index:1}
+.cosmos .design-preview{display:none}
+.cosmos header{order:-1;min-height:30px;align-items:center}
+.cosmos .brand{font:350 15px/1 'Manrope Variable',sans-serif;letter-spacing:.38em;color:#eee7f1;transform:none;text-shadow:none;animation:quiet-arrival 1.4s ease-out both}
 .cosmos .brand-mark{display:none}
-.cosmos .xp{font-size:11px;background:#15121d55;color:var(--champagne);border-color:#dcc29e30;padding:8px 12px;backdrop-filter:blur(10px)}
-.cosmos .hero{order:0;padding-top:34px;text-align:left}
-.cosmos .hero>.eyebrow{font-size:10px;letter-spacing:.14em;color:#c1b5c9;font-weight:500}
-.cosmos h1{font-family:inherit;font-weight:500;font-size:32px;letter-spacing:-1.2px;margin:9px 0 10px;line-height:1.2}
-.cosmos .hero>p{color:#b7adbf;font-size:13px;line-height:1.6;max-width:260px}
-.cosmos .orb{width:188px;height:188px;margin:59px auto 52px;background:radial-gradient(circle,#08081077,transparent 72%);box-shadow:none;border:0}
-.cosmos .orbit{border-color:#f1ebe216;inset:0}
-.cosmos .orbit:before{inset:9px;border-color:#f1ebe20a}
-.cosmos .orb-inner{text-align:center;gap:10px}
-.cosmos .orb-inner span{font-size:9px;color:#c9c1cc;letter-spacing:.2em;font-weight:500}
-.cosmos .orb-inner strong{font:300 56px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:-2px;color:var(--pearl);font-variant-numeric:tabular-nums}
-.cosmos .orb-inner small{font-size:8px;color:#c6b5a3;font-weight:500;letter-spacing:.16em}
-.cosmos .running .orbit{border:1px solid #e9dbc5;border-left-color:#f1ebe21a;border-bottom-color:#f1ebe21a}
-.cosmos .start-button{background:linear-gradient(115deg,#f5f1ec,#d6cfdc 65%,#e1c9aa);color:#211e29;box-shadow:0 4px 32px #f3d6b51a;border:1px solid #fff6;border-radius:16px;font-size:13px;padding:20px 12px;letter-spacing:.16em;min-height:72px}
-.cosmos .start-button span{font-size:11px;letter-spacing:0;font-weight:400;opacity:.72;margin-top:7px}
-.cosmos .start-button.complete{color:#ead8bd;background:#201b225c;border:1px solid #ead8bd4a;box-shadow:inset 0 0 25px #ead8bd06}
-.cosmos .start-button.active{background:#ebe3d9e8}
-.cosmos .win{color:#ebcfaa;text-align:center;font-size:12px;line-height:1.5}
-.cosmos .deadline{order:1;margin-top:19px;background:#15111c55;border:1px solid #d2bd9e29;padding:18px 20px;text-align:left;backdrop-filter:blur(12px);border-radius:17px;box-shadow:0 6px 30px #0002}
-.cosmos .deadline .eyebrow{font-size:8px;font-weight:500;letter-spacing:.12em;color:#ccb99f;line-height:1.6}
-.cosmos .deadline>strong{font-family:inherit;font-size:34px;font-weight:300;letter-spacing:1px;color:#f1dfc5;margin:8px 0}
-.cosmos .deadline>strong span{opacity:.3}
-.cosmos .deadline p{color:#b9aebc;font-size:11px;line-height:1.6;max-width:290px}
-.cosmos .deadline.secured{border-color:#d2bd9e29;background:#15111c55}
-.cosmos .deadline.secured>strong{font-size:25px;color:#ebd6b8;font-weight:400}
-.cosmos .deadline.secured p,.cosmos .deadline.secured .eyebrow{color:#c9bbab}
-.cosmos .deadline.urgent{background:#321c226b;border-color:#d3916855}
-.cosmos .deadline.urgent>strong{color:#f0ba9c}
-.cosmos .stats{order:2;margin-top:20px;gap:12px}
-.cosmos .card{background:#10101acc;border:1px solid #bcb4ce1a;border-radius:18px;padding:19px;backdrop-filter:blur(12px)}
-.cosmos .card-title{font-size:9px;letter-spacing:.11em;color:#aca2b6;font-weight:500}
-.cosmos .streak-number{font:300 36px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin-top:11px}
-.cosmos .streak-number small{font:400 12px -apple-system,sans-serif;color:#a8a0b1}
-.cosmos .week{margin-top:19px}
-.cosmos .day{font-size:9px;color:#918a9e;gap:10px}
-.cosmos .day b{color:#c8c0d2;background:#ffffff08;width:30px;height:30px;font-size:11px}
-.cosmos .day b.marked{background:#ddc5a4;color:#251d20}
-.cosmos .day b.today{outline-color:#d7c3a0;outline-offset:3px}
-.cosmos .freeze-card{padding:15px 17px}
-.cosmos .freeze-icon{background:#222336;color:#c1c4e5;font-size:21px;border-radius:12px}
-.cosmos .freeze-copy p{color:#9e96ad;font-size:10px;line-height:1.7}
-.cosmos .freeze-card button{background:#ffffff09;color:#d6c9e2;flex-shrink:0}
-.cosmos footer{order:3;margin-top:12px;padding-top:5px;gap:10px}
-.cosmos .reminders{color:#b2a7bc;font-size:10px;min-height:40px;text-align:left}
-.cosmos .push-status{order:4;color:#998da5;font-size:10px;margin-top:0}
-.cosmos .star-demo{order:6;margin:10px auto 0;background:transparent;color:#b9a58d;border:0;border-bottom:1px solid #b9a58d44;font:400 11px -apple-system,sans-serif;padding:8px;min-height:40px;cursor:pointer}
+.cosmos .xp{font:350 11px 'Manrope Variable',sans-serif;color:#d1bd9f;background:none;border:0;padding:0;letter-spacing:.02em;box-shadow:none}
+.cosmos .hero{order:0;display:flex;flex-direction:column;text-align:center;padding-top:40px;min-height:calc(100svh - 206px)}
+.cosmos .hero>.eyebrow{display:none}
+.cosmos .hero h1{font:250 32px/1.3 'Manrope Variable',sans-serif;letter-spacing:-.06em;margin:0 0 12px;color:#f2eef4;text-shadow:0 2px 24px #0006}
+.cosmos .hero>p{font:350 11px/1.8 'Manrope Variable',sans-serif;color:#c4bdcd;margin:0 auto;max-width:290px;text-shadow:0 2px 10px #0008}
+.cosmos .orb{width:100%;height:108px;min-height:108px;margin:auto 0 28px;padding-top:22px;background:none;border:0;box-shadow:none}
+.cosmos .orbit{display:none}
+.cosmos .orb-inner{display:flex;flex-direction:column;text-align:center;gap:10px}
+.cosmos .orb-inner span{font:350 9px 'Manrope Variable',sans-serif;letter-spacing:.18em;color:#c9c0d2}
+.cosmos .orb-inner strong,.cosmos .running .orb-inner strong{font:200 62px/1 'Manrope Variable',sans-serif;letter-spacing:-.065em;color:#f2edf5;font-variant-numeric:tabular-nums;text-shadow:0 2px 25px #0006}
+.cosmos .orb-inner small{display:none}
+.cosmos .start-button{align-self:center;width:82%;min-height:54px;margin:0 auto 26px;border-radius:30px;background:linear-gradient(115deg,#ece9f011,#d1c6e017);border:1px solid #eeecf13b;box-shadow:inset 0 1px 0 #fff1,0 8px 30px #0002;backdrop-filter:blur(8px);color:#f1ecf4;font:350 15px/1.5 'Manrope Variable',sans-serif;letter-spacing:.08em;padding:13px 18px;transition:background .3s,transform .2s,border-color .3s}
+.cosmos .start-button span{display:none}
+.cosmos .start-button:hover:not(:disabled){background:#e9def025;border-color:#f3e9f16b}
+.cosmos .start-button.complete,.cosmos .start-button.active{background:#ead8bf0b;border-color:#dbcaad2a;color:#ded0bb;box-shadow:none}
+.cosmos .start-button.complete{font-size:12px;letter-spacing:.03em}
+.cosmos .win{color:#e0c7a5;font-size:11px;line-height:1.7;font-weight:350;margin:0 auto 10px;max-width:250px}
+.cosmos .deadline{order:1;margin:0;padding:16px 0 22px;text-align:center;background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none}
+.cosmos .deadline .eyebrow{font:350 8px/1.6 'Manrope Variable',sans-serif;letter-spacing:.11em;color:#c6b5a0}
+.cosmos .deadline>strong{font:250 28px/1.3 'Manrope Variable',sans-serif;letter-spacing:.06em;color:#e7d9c5;margin:6px 0 8px}
+.cosmos .deadline>strong span{opacity:.35}
+.cosmos .deadline p{font:350 10px/1.8 'Manrope Variable',sans-serif;color:#b9afc4;max-width:280px;margin:auto}
+.cosmos .deadline.secured,.cosmos .deadline.urgent{background:none;border:0}
+.cosmos .deadline.secured>strong{font:250 24px/1.5 'Manrope Variable',sans-serif;letter-spacing:-.03em;color:#e6d6bd}
+.cosmos .deadline.secured p,.cosmos .deadline.secured .eyebrow{color:#c4b6a4}
+.cosmos .deadline.urgent>strong{color:#efb99e;text-shadow:0 0 25px #b6654322}
+.cosmos .stats{order:2;gap:0;margin-top:7px;border-top:1px solid #c7b9d323}
+.cosmos .card{background:none;border:0;border-bottom:1px solid #c7b9d323;border-radius:0;padding:23px 0;backdrop-filter:none}
+.cosmos .card-title{font:400 9px/1.5 'Manrope Variable',sans-serif;letter-spacing:.1em;color:#bfb5cc}
+.cosmos .streak-number{font:250 32px/1.3 'Manrope Variable',sans-serif;margin-top:5px}
+.cosmos .streak-number small{font:350 11px 'Manrope Variable',sans-serif;color:#bbb0c8}
+.cosmos .week{margin-top:20px}
+.cosmos .day{font:350 9px 'Manrope Variable',sans-serif;color:#b1a5c0;gap:12px}
+.cosmos .day b{font:350 11px 'Manrope Variable',sans-serif;width:30px;height:30px;background:none;color:#e2d9ed}
+.cosmos .day b.marked{background:#dac6a51c;color:#f1debd;border:1px solid #dac6a54d}
+.cosmos .day b.today{outline:1px solid #ded0bb70;outline-offset:2px}
+.cosmos .freeze-card{padding:20px 0;gap:13px}
+.cosmos .freeze-icon{background:none;color:#c7c5e2;width:26px;height:30px;font-size:23px;opacity:.8}
+.cosmos .freeze-copy p{font:350 10px/1.8 'Manrope Variable',sans-serif;color:#b6aac5;margin-top:5px}
+.cosmos .freeze-card button{flex-shrink:0;background:none;border:1px solid #d6c8de29;color:#c7b9d5;width:36px;height:36px}
+.cosmos .freeze-card button:disabled{opacity:.35}
+.cosmos footer{order:3;margin-top:5px;padding-top:10px;gap:10px}
+.cosmos .reminders{font:350 10px/1.6 'Manrope Variable',sans-serif;min-height:44px;color:#c4b9d1;padding:3px 0;text-align:left}
+.cosmos .push-status{order:4;font:350 9px/1.7 'Manrope Variable',sans-serif;color:#b6a9c6;margin:0}
+.cosmos .notification-result{order:5;font:350 12px/1.8 'Manrope Variable',sans-serif;color:#e0d8e8;background:#12101ce8;border:1px solid #e4d4ed29;border-radius:18px;backdrop-filter:blur(12px)}
+.cosmos .notification-result button{background:#f0e9f21a;border:1px solid #f0e9f23b;color:#eee5f2;border-radius:20px;min-height:40px;font-weight:350}
+.cosmos .star-demo{order:6;align-self:center;background:none;border:0;font:350 10px 'Manrope Variable',sans-serif;color:#c3b09b;min-height:44px;margin:10px 0 0;cursor:pointer}
 .cosmos .star-demo:disabled{opacity:.4}
-.cosmos .notification-result{order:5;color:#d9cfe2;background:#15131fe8;border-color:#d1bdd333;font-size:12px}
-.cosmos .notification-result button{color:#241d2a;background:#e5d8c7;min-height:40px}
-.cosmos button:focus-visible{outline:2px solid #f3ddbe;outline-offset:4px}
-.shooting-star{position:absolute;left:27%;top:29%;width:150px;height:2px;transform:rotate(-32deg);animation:shooting-flight 2.2s ease-out both}
-.shooting-star i{display:block;width:100%;height:100%;background:linear-gradient(90deg,transparent,#eed8b8);box-shadow:3px 0 14px #f6d6aa;border-radius:100%}
-@keyframes shooting-flight{0%{opacity:0;translate:180px -95px}12%{opacity:1}70%,100%{opacity:0;translate:-190px 135px}}
-@keyframes cosmic-drift{from{transform:scale(1.025) translate3d(-.5%,0,0)}to{transform:scale(1.08) translate3d(.8%,1%,0)}}
-@keyframes star-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-9px,14px,0)}}
-@keyframes starlight{from{opacity:.16}to{opacity:.72}}
-@keyframes word-focus{from{filter:blur(5px);opacity:.3}to{filter:blur(0);opacity:1}}
-@media(min-width:650px){.cosmos-scene{max-width:510px;left:50%;right:auto;width:100%;transform:translateX(-50%);border-inline:1px solid #ffffff0c}.cosmos{padding-inline:30px}}
-@media(max-height:750px){.cosmos .orb{margin-top:40px;margin-bottom:32px;width:168px;height:168px}.cosmos .hero{padding-top:24px}}
-@media(prefers-reduced-motion:reduce){.cosmos-scene *,.cosmos .brand{animation:none!important;transition:none!important}.cosmos .shooting-star{display:none}.cosmos .running .orbit{animation:none!important}}
+.cosmos button:focus-visible{outline:2px solid #e8d2b5;outline-offset:4px}
+.cosmos .hero .mission-control{position:relative;align-self:center;display:grid;place-items:center;width:220px;height:220px;min-height:220px;margin:auto 0 22px;padding:0;border:0;border-radius:50%;color:var(--pearl);background:radial-gradient(circle,#0909141c 0%,#0909140b 65%,transparent 70%);box-shadow:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .35s,background .6s}
+.cosmos .hero .mission-control:not(:disabled):active{transform:scale(.965)}
+.cosmos .hero .mission-control:disabled{cursor:default;opacity:1}
+.cosmos .mission-control .orb-inner{position:relative;gap:11px;pointer-events:none}
+.cosmos .mission-control .orb-inner>span{font-size:8px;letter-spacing:.12em;text-transform:none}
+.cosmos .mission-control .orb-inner small{display:block;font:350 9px 'Manrope Variable',sans-serif;letter-spacing:.025em;color:#d0c0b2}
+.mission-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:rotate(-90deg);pointer-events:none}
+.mission-ring circle{fill:none;stroke-width:.6}
+.mission-track{stroke:#ebe4f11a}
+.mission-progress{stroke:#e3d7eb55;stroke-linecap:round;transition:stroke-dashoffset .5s linear,stroke 1.2s;stroke-width:.8!important}
+.cosmos .mission-control::before{content:'';position:absolute;inset:11px;border-radius:50%;box-shadow:0 0 28px #d9d5f20d,inset 0 0 25px #d9d5f208;animation:orbit-breath 7s ease-in-out infinite;pointer-events:none}
+.cosmos .mission-control.running .mission-progress{stroke:#ede0c6c4;filter:drop-shadow(0 0 3px #e9d6b744)}
+.cosmos .mission-control.running::before{animation:none;opacity:.65;transform:none}
+.cosmos .mission-control.running::after{content:'';position:absolute;inset:12px;border:1px solid #ead6b980;border-radius:50%;animation:launch-wave 1.5s ease-out both;pointer-events:none}
+.cosmos .mission-control.orb-complete .mission-progress{stroke:#e6cc9c80}
+.cosmos .mission-control.orb-complete .orb-inner strong{font-size:34px;letter-spacing:-.04em;color:#e8d2af}
+.cosmos .mission-control.celebrate{animation:mission-finish 2.2s ease-out both}
+@keyframes orbit-breath{0%,100%{opacity:.35;transform:scale(.98)}50%{opacity:.9;transform:scale(1.02)}}
+@keyframes launch-wave{from{transform:scale(1);opacity:.8}to{transform:scale(1.35);opacity:0}}
+@keyframes mission-finish{0%{box-shadow:0 0 0 #ecd1a600}35%{box-shadow:0 0 80px #ecd1a627}100%{box-shadow:0 0 0 #ecd1a600}}
+.shooting-star{position:absolute;left:46%;top:32%;width:155px;height:1px;transform:rotate(-33deg);animation:shooting-flight 2.2s ease-out both}
+.shooting-star i{display:block;width:100%;height:100%;background:linear-gradient(90deg,transparent,#f7e8d1);box-shadow:2px 0 9px #f8dcac;border-radius:100%}
+@keyframes universe-drift{from{transform:scale(1.01) translate3d(1%,0,0)}to{transform:scale(1.055) translate3d(-1%,.8%,0)}}
+@keyframes dust-flow{from{transform:translate3d(-4%,-1%,0) rotate(-4deg);opacity:.35}to{transform:translate3d(4%,3%,0) rotate(4deg);opacity:.8}}
+@keyframes universe-breath{from{opacity:.18}to{opacity:.85}}
+@keyframes quiet-arrival{from{opacity:0;filter:blur(3px)}to{opacity:1;filter:blur(0)}}
+@keyframes shooting-flight{0%{opacity:0;translate:180px -100px}15%{opacity:1}80%,100%{opacity:0;translate:-230px 145px}}
+@media(min-width:650px){.cosmos{max-width:480px;padding-inline:30px}.cosmos-scene{inset:0;max-width:none;width:auto;transform:none}.cosmos-nebula{background-position:65% 40%}.cosmos-vignette{background:linear-gradient(90deg,#04040d7a,transparent 30%,transparent 70%,#04040d7a),linear-gradient(180deg,transparent,#04040c22 50%,#04040cd9)}.cosmos .hero{min-height:calc(100svh - 210px)}}
+@media(min-width:900px){.cosmos-nebula{background-image:url('/assets/cosmos-v2-desktop.webp')}}
+@media(max-height:720px){.cosmos .hero{padding-top:28px;min-height:460px}.cosmos .hero h1{font-size:28px}.cosmos .orb{margin-bottom:22px}.cosmos .start-button{margin-bottom:20px}}
+@media(prefers-reduced-motion:reduce){.cosmos-scene *,.cosmos .brand,.cosmos .mission-control,.cosmos .mission-control::before,.cosmos .mission-control::after,.cosmos .mission-satellite{animation:none!important;transition:none!important}.cosmos .shooting-star{display:none}.cosmos-breath,.cosmos-dust{opacity:.3}}

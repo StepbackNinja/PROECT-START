@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { disablePush, enableAndTestPush, pushEnabled, syncPush } from './reminders'
 import { dayKey, load, persist, weekKey, type Save } from './storage'
 import CosmosScene from './CosmosScene'
+import MissionControl from './MissionControl'
 
 export default function App({cosmos=false}: {cosmos?:boolean}) {
   const [save, setSave] = useState<Save>(load)
@@ -74,9 +75,11 @@ export default function App({cosmos=false}: {cosmos?:boolean}) {
       {done?<strong>День твой ✓</strong>:<strong>{String(Math.floor(until/3600000)).padStart(2,'0')}<span>:</span>{String(Math.floor(until/60000)%60).padStart(2,'0')}<span>:</span>{String(Math.floor(until/1000)%60).padStart(2,'0')}</strong>}
       <p>{done?'Серия сохранена. Возвращайся завтра.':until<300000?'До полуночи меньше пяти минут. Начни сейчас.':'До полуночи. Удели делу пять минут, чтобы засчитать этот день.'}</p>
     </section>
-    <section className="hero"><div className="eyebrow">ТВОЙ МОМЕНТ — СЕГОДНЯ</div><h1>{done ? 'Ты это сделал.' : 'Начни с малого.'}</h1><p>{done ? 'Пять минут — и день уже твой.' : 'Не нужно быть готовым. Просто начни.'}</p>
-    <div className={`orb ${save.missionEnd&&!done?'running':''} ${won?'celebrate':''}`}><div className="orbit"/><div className="orb-inner"><span>{save.missionEnd&&!done?'МИССИЯ':'5 МИНУТ'}</span><strong>{save.missionEnd&&!done?time:'5:00'}</strong><small>{save.missionEnd&&!done?'ТЫ СПРАВИШЬСЯ':'ТОЛЬКО ДЛЯ ТЕБЯ'}</small></div></div>
-    <button className={`start-button ${done?'complete':''} ${save.missionEnd?'active':''}`} onClick={start} disabled={done||!!save.missionEnd}>{done?'✓  ГОТОВО НА СЕГОДНЯ':save.missionEnd?`МИССИЯ ИДЁТ · ${time}`:'НАЧАТЬ'}{!done&&!save.missionEnd&&<span>5 минут делай то, что откладывал</span>}</button>
+    <section className="hero"><div className="eyebrow">ТВОЙ МОМЕНТ — СЕГОДНЯ</div><h1>{done ? 'Ты это сделал.' : cosmos ? 'Всего пять минут.' : 'Начни с малого.'}</h1><p>{done ? 'Пять минут — и день уже твой.' : cosmos ? 'Выбери одно дело. Начни, даже если не готов.' : 'Не нужно быть готовым. Просто начни.'}</p>
+    {cosmos?<MissionControl remaining={save.missionEnd?Math.max(0,(save.missionEnd-now)/1000):300} time={time} running={!!save.missionEnd&&!done} done={done} victory={won} onStart={start}/>:<>
+      <div className={`orb ${save.missionEnd&&!done?'running':''} ${won?'celebrate':''}`}><div className="orbit"/><div className="orb-inner"><span>{save.missionEnd&&!done?'МИССИЯ':'5 МИНУТ'}</span><strong>{save.missionEnd&&!done?time:'5:00'}</strong><small>{save.missionEnd&&!done?'ТЫ СПРАВИШЬСЯ':'ТОЛЬКО ДЛЯ ТЕБЯ'}</small></div></div>
+      <button className={`start-button ${done?'complete':''} ${save.missionEnd?'active':''}`} onClick={start} disabled={done||!!save.missionEnd}>{done?'✓  ГОТОВО НА СЕГОДНЯ':save.missionEnd?`МИССИЯ ИДЁТ · ${time}`:'НАЧАТЬ'}{!done&&!save.missionEnd&&<span>5 минут делай то, что откладывал</span>}</button>
+    </>}
     {won&&<div className="win" role="status">✦ Отличная работа! +50 XP · серия продлена</div>}
     </section>
     <section className="stats"><article className="card streak-card"><div className="card-title">🔥 СЕРИЯ</div><div className="streak-number">{streak}<small> дней</small></div><div className="week">{week.map((d,i)=><div className="day" key={i}><span>{['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'][i]}</span><b className={`${save.days.includes(dayKey(d))?'marked':''} ${dayKey(d)===today?'today':''}`}>{save.days.includes(dayKey(d))?'✓':d.getDate()}</b></div>)}</div><div className="midnight">⏳ До полуночи <strong>{String(Math.floor(until/3600000)).padStart(2,'0')}:{String(Math.floor(until/60000)%60).padStart(2,'0')}:{String(Math.floor(until/1000)%60).padStart(2,'0')}</strong></div></article>
