@@ -1,0 +1,7 @@
+work/
+outputs/
+node_modules/
+.git/
+.env*
+supabase/
+docs/
